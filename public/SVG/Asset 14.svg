@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 403.68 105.95">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <g id="front_pocket" data-name="front pocket">
+    <g>
+      <path class="cls-1" d="m34.77,1.95s201.42,56.26,367.42,38.2v52.09S143.12,79.05,2.12,104.05c0,0,6.95-23.61,38.2-38.89,0,0-7.64-16.67-5.56-63.2Z"/>
+      <line class="cls-1" x1="70.48" y1="64.81" x2="40.32" y2="65.16"/>
+    </g>
+  </g>
+</svg>

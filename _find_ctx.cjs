@@ -1,0 +1,1 @@
+const fs = require('fs'); const txt = fs.readFileSync('src/components/forms/CustomerMeasurementForm.tsx', 'utf8'); let matches = txt.matchAll(/.{0,20}[^\x00-\x7F]{2,}.{0,20}/g); for (let m of [...matches].slice(0, 30)) { console.log(m[0].replace(/\n/g, '\\n')); }
