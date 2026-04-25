@@ -77,8 +77,9 @@ export default function MeasurementPrint({
             const html = generateMeasurementSlipHTML(customer, measurement, layout, settings, workerNames, order);
 
             if (window.electronAPI) {
+                const pageSize = settings?.slipPageSize === 'A4' ? 'A4' : 'A5';
                 if (settings?.defaultPrinter && window.electronAPI.printSilent) {
-                    const result = await window.electronAPI.printSilent(html, settings.defaultPrinter);
+                    const result = await window.electronAPI.printSilent(html, settings.defaultPrinter, pageSize);
                     if (result.success) {
                         toast.success('Print job sent to ' + settings.defaultPrinter);
                         onClose();
@@ -86,7 +87,7 @@ export default function MeasurementPrint({
                         toast.error('Silent print failed: ' + result.error);
                     }
                 } else if (window.electronAPI.printToPDF) {
-                    const result = await window.electronAPI.printToPDF(html);
+                    const result = await window.electronAPI.printToPDF(html, pageSize);
                     if (result.success) {
                         onClose();
                     } else {

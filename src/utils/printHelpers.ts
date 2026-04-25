@@ -1,7 +1,12 @@
-﻿import { Customer, CustomerMeasurement, Settings, Order, Worker } from '@/db/database';
+import { Customer, CustomerMeasurement, Settings, Order, Worker } from '@/db/database';
 import { formatDate } from '@/utils/formatters';
 import { formatMeasurementDisplay } from '@/utils/fractionUtils';
 import { LayoutElement, WC_COLLAR_OPTIONS, DAMAN_OPTIONS } from '@/utils/slipLayout';
+import asset12GhumRaw from '/SVG/Asset_12_Ghum.svg?raw';
+import asset6SadaBukramRaw from "/SVG/Asset_6_Sada_Bukram.svg?raw";
+import asset6KaniAsteenRaw from "/SVG/Asset_6_Kani_Asteen.svg?raw";
+import asset6BaghairBukramFoldRaw from "/SVG/Asset_6_Baghair_Bukram_Fold.svg?raw";
+import asset6Raw from "/SVG/Asset 6.svg?raw";
 
 export const generateMeasurementSlipHTML = (
     customer: Customer,
@@ -76,7 +81,6 @@ export const generateMeasurementSlipHTML = (
         if (element.type === 'input') {
             const val = getVal(element.content.field);
             const labelHtml = !element.content.hideLabel ? `<span style="font-weight: 600; color: #475569; padding: 0 6px; font-size: 13px; background: #fff; flex-shrink: 0; white-space: nowrap;">${element.content.label}</span>` : '';
-            const isHeaderVal = ['sNo', 'customerName', 'suitQty', 'karigar'].includes(element.content.field);
             const valStyle = element.content.hideLabel
                 ? `display: flex; align-items: center; justify-content: center; text-align: center; font-size: 16px;`
                 : 'padding: 0 6px; font-size: 14px;';
@@ -106,18 +110,48 @@ export const generateMeasurementSlipHTML = (
         }
 
         if (element.type === 'skPattiKaajGroup') {
-            if (measurement.fields['sk_patti_kaaj'] !== 'yes') return '';
+            const hasKaaj = measurement.fields['sk_patti_kaaj'] === 'yes';
+            
+            if (!hasKaaj) return '';
+
+            let texts = [];
+            if (hasKaaj) texts.push('پٹی کاج ہو');
+            
             return `
-                <div style="${baseStyle} display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 15px; font-weight: bold; font-family: 'NotoNastaliqUrdu', serif; color: #0f172a; white-space: nowrap; text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;">پٹی کاج ہو</span>
+                <div style="${baseStyle} display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;">
+                    ${texts.map(t => `<span style="font-size: 13px; font-weight: bold; font-family: 'NotoNastaliqUrdu', serif; color: #0f172a; white-space: nowrap; text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;">${t}</span>`).join('')}
                 </div>
             `;
         }
 
         if (element.type === 'svg') {
-            const svgBase64 = element.content.raw
-                ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(element.content.raw.replace(/\\n/g, ''))}`
-                : getAbsoluteUrl(`/SVG/${element.content.asset}`); // Note: file path won't easily work in electron print unless baseUrl is mapped, but since these have RAW content loaded, it's fine.
+            let assetName = element.content.asset;
+            let rawContent = element.content.raw;
+            
+            if (element.id === 'svg_shape12' && measurement.fields['sk_patti_type'] === 'ghum_patti') {
+                assetName = 'Asset_12_Ghum.svg';
+                rawContent = asset12GhumRaw;
+            }
+
+            if (element.id === 'svg_shape6') {
+                if (measurement.fields['sk_asteen_type'] === 'sada_bukram') {
+                    assetName = 'Asset_6_Sada_Bukram.svg';
+                    rawContent = asset6SadaBukramRaw;
+                } else if (measurement.fields['sk_asteen_type'] === 'kani_asteen') {
+                    assetName = 'Asset_6_Kani_Asteen.svg';
+                    rawContent = asset6KaniAsteenRaw;
+                } else if (measurement.fields['sk_asteen_type'] === 'baghair_bukram') {
+                    assetName = 'Asset_6_Baghair_Bukram_Fold.svg';
+                    rawContent = asset6BaghairBukramFoldRaw;
+                } else if (!measurement.fields['sk_asteen_type'] || measurement.fields['sk_asteen_type'] === 'sada_asteen' || measurement.fields['sk_asteen_type'] === 'default') {
+                    assetName = 'Asset 6.svg';
+                    rawContent = asset6Raw;
+                }
+            }
+
+            const svgBase64 = rawContent
+                ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(rawContent.replace(/\\n/g, ''))}`
+                : getAbsoluteUrl(`/SVG/${assetName}`); // Note: file path won't easily work in electron print unless baseUrl is mapped, but since these have RAW content loaded, it's fine.
 
             const inputsHtml = (element.content.inputs || []).map((inp: any) => {
                 const valStr = (getVal(inp.id) || '').toString();
@@ -215,10 +249,10 @@ export const generateMeasurementSlipHTML = (
 
         if (element.type === 'banGroup') {
             const options = element.content?.options || [
-                { key: 'ban_half_gol', labelUr: 'ہاف گول' },
-                { key: 'ban_half_seedha', labelUr: 'ہاف سیدھا' },
-                { key: 'ban_full_gol', labelUr: 'فل گول' },
-                { key: 'ban_full_seedha', labelUr: 'فل سیدھا' },
+                { key: 'ban_half_gol', labelUr: 'ہاف بین گول' },
+                { key: 'ban_half_seedha', labelUr: 'ہاف بین سیدھا' },
+                { key: 'ban_full_gol', labelUr: 'فل بین گول' },
+                { key: 'ban_full_seedha', labelUr: 'فل بین سیدھا' },
             ];
 
             const selectedOption = options.find((opt: any) => measurement.fields['ban_selected'] === opt.key);
@@ -440,14 +474,26 @@ export const generateMeasurementSlipHTML = (
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact; 
                 padding: 0;
-                transform: scale(0.95);
-                transform-origin: top center;
-                height: 98vh;
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
                 overflow: hidden;
             }
-            @page { size: ${settings?.slipPageSize === 'A4' ? 'A4' : 'A5'}; margin: 0; }
+            @page { size: ${settings?.slipPageSize === 'A4' ? 'A4' : 'A5'} portrait; margin: 0; }
             .action-bar { display: none !important; }
-            .slip-container { width: 100%; border: none; }
+            .slip-container { border: none; }
+            .print-wrapper {
+                /* Center and scale the fixed size elements to fit beautifully in the page */
+                transform: scale(calc(min(100vw / 520, 100vh / ${settings?.slipPageSize === 'A4' ? '800' : '800'})));
+                transform-origin: center center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -463,21 +509,23 @@ export const generateMeasurementSlipHTML = (
     <button onclick="window.close()" style="padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-left: 10px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">Close</button>
 </div>
 
-<div class="slip-container">
-    ${layoutHTML}
-</div>
+<div class="print-wrapper">
+    <div class="slip-container">
+        ${layoutHTML}
+    </div>
 
-<div class="footer-details" style="width: 500px; padding: 10px; margin-top: 5px; font-size: 14px; color: #555; text-align: right; direction: rtl; border-top: 1px dashed #ccc;">
-    <div style="margin-bottom: 8px; font-size: 12px; color: #475569; text-align: center; font-family: 'NotoNastaliqUrdu', serif;">
-        رسید گم ہو جانے پر اگر عدد میں کسی قسم کی بھی غلطی ہوئی تو اس کا ذمہ دار کاریگر ہوگا۔
-    </div>
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        ${order ? `<div style="margin-bottom: 4px;"><strong>آرڈر #:</strong> ${order.id} | <strong>تاریخ:</strong> ${formatDate(order.createdAt)} - ${formatDate(order.dueDate)}</div>` : ''}
-        ${order?.advancePayment ? `<div style="margin-bottom: 4px;"><strong>ایڈوانس:</strong> ${order.advancePayment}</div>` : ''}
-    </div>
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        ${workerSummary ? `<div style="margin-bottom: 4px;"><strong>کاریگر:</strong> ${workerSummary}</div>` : ''}
-        ${order?.deliveryNotes ? `<div style="margin-bottom: 4px;"><strong>نوٹس:</strong> ${order.deliveryNotes}</div>` : ''}
+    <div class="footer-details" style="width: 500px; padding: 10px; margin-top: 5px; font-size: 14px; color: #555; text-align: right; direction: rtl; border-top: 1px dashed #ccc;">
+        <div style="margin-bottom: 8px; font-size: 12px; color: #475569; text-align: center; font-family: 'NotoNastaliqUrdu', serif;">
+            رسید گم ہو جانے پر اگر عدد میں کسی قسم کی بھی غلطی ہوئی تو اس کا ذمہ دار کاریگر ہوگا۔
+        </div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            ${order ? `<div style="margin-bottom: 4px;"><strong>آرڈر #:</strong> ${order.id} | <strong>تاریخ:</strong> ${formatDate(order.createdAt)} - ${formatDate(order.dueDate)}</div>` : ''}
+            ${order?.advancePayment ? `<div style="margin-bottom: 4px;"><strong>ایڈوانس:</strong> ${order.advancePayment}</div>` : ''}
+        </div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            ${workerSummary ? `<div style="margin-bottom: 4px;"><strong>کاریگر:</strong> ${workerSummary}</div>` : ''}
+            ${order?.deliveryNotes ? `<div style="margin-bottom: 4px;"><strong>نوٹس:</strong> ${order.deliveryNotes}</div>` : ''}
+        </div>
     </div>
 </div>
 

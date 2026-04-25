@@ -35,7 +35,6 @@ import asset12GhumRaw from "/SVG/Asset_12_Ghum.svg?raw";
 import asset6SadaBukramRaw from "/SVG/Asset_6_Sada_Bukram.svg?raw";
 import asset6KaniAsteenRaw from "/SVG/Asset_6_Kani_Asteen.svg?raw";
 import asset6BaghairBukramFoldRaw from "/SVG/Asset_6_Baghair_Bukram_Fold.svg?raw";
-import asset6Raw from "/SVG/Asset 6.svg?raw";
 
 interface CustomerMeasurementFormProps {
   customerId: number | string;
@@ -87,21 +86,10 @@ export default function CustomerMeasurementForm({
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, fieldKey: string, options: any[]) => {
       e.preventDefault();
-
-      // Calculate approximate height (each option is ~36px + some padding)
-      const estimatedHeight = Math.min(options.length * 36 + 16, 280);
-      const spaceBelow = window.innerHeight - e.clientY;
-
-      let top = e.clientY;
-      // If there's not enough space below, shift it upwards
-      if (spaceBelow < estimatedHeight) {
-        top = Math.max(10, e.clientY - estimatedHeight);
-      }
-
       setContextMenu({
         visible: true,
         x: e.clientX,
-        y: top,
+        y: e.clientY,
         fieldKey,
         options,
       });
@@ -361,13 +349,13 @@ export default function CustomerMeasurementForm({
           {saveStatus === "saving" && (
             <span className="text-xs font-normal text-gray-500 flex items-center gap-1 animate-pulse bg-gray-100 px-2 py-1 rounded-full">
               <Save className="w-3 h-3" />{" "}
-              {isUrdu ? "Ù…Ø­ÙÙˆظ ÛÙˆ رہا ÛÛ’..." : "Saving..."}
+              {isUrdu ? "Ù…Ø­ÙÙˆØ¸ ÛÙˆ Ø±ÛØ§ ÛÛ’..." : "Saving..."}
             </span>
           )}
           {saveStatus === "saved" && (
             <span className="text-xs font-normal text-green-600 flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full">
               <CheckCircle className="w-3 h-3" />{" "}
-              {isUrdu ? "Ù…Ø­ÙÙˆظ" : "Saved"}
+              {isUrdu ? "Ù…Ø­ÙÙˆØ¸" : "Saved"}
             </span>
           )}
           {saveStatus === "error" && (
@@ -506,21 +494,21 @@ export default function CustomerMeasurementForm({
 
             if (element.type === "input") {
               const isHiddenHeaderValue =
-                element.content?.hideLabel &&
+                element.content.hideLabel &&
                 ["sNo", "customerName", "karigar", "suitQty"].includes(
-                  element.content?.field || "",
+                  element.content.field,
                 );
               const isSuitQtyHeaderValue =
                 element.id === "header_val_suitQty" ||
-                (element.content?.hideLabel &&
-                  element.content?.field === "suitQty");
+                (element.content.hideLabel &&
+                  element.content.field === "suitQty");
               const inputClass = `${isHiddenHeaderValue ? "w-full min-w-0" : "flex-1 min-w-0 w-full"} outline-none text-slate-900 font-bold px-1.5 text-sm bg-transparent z-10 ${
-                element.content?.hideLabel
+                element.content.hideLabel
                   ? isHiddenHeaderValue
                     ? "text-center text-base"
                     : "text-left text-base"
                   : ""
-              } ${["sNo", "customerName"].includes(element.content?.field || "") ? "cursor-not-allowed opacity-80" : ""}`;
+              } ${["sNo", "customerName"].includes(element.content.field) ? "cursor-not-allowed opacity-80" : ""}`;
 
               return (
                 <div
@@ -528,12 +516,12 @@ export default function CustomerMeasurementForm({
                   style={style}
                   className={`flex items-center ${isHiddenHeaderValue ? "justify-center" : ""}`}
                 >
-                  {!element.content?.hideLabel && (
+                  {!element.content.hideLabel && (
                     <span
                       className="font-semibold text-slate-600 px-1.5 text-[13px] shrink-0 whitespace-nowrap bg-white"
                       style={{ fontFamily: "Arial, sans-serif" }}
                     >
-                      {element.content?.label}
+                      {element.content.label}
                     </span>
                   )}
                   <div
@@ -546,18 +534,18 @@ export default function CustomerMeasurementForm({
                     <input
                       type="text"
                       value={
-                        element.content?.field === "customerName"
+                        element.content.field === "customerName"
                           ? customerName || ""
                           : formatMeasurementDisplay(
-                              fields[element.content?.field] || "",
+                              fields[element.content.field] || "",
                             )
                       }
                       onChange={(e) =>
-                        handleFieldChange(element.content?.field, e.target.value)
+                        handleFieldChange(element.content.field, e.target.value)
                       }
                       readOnly={
-                        element.content?.field === "sNo" ||
-                        element.content?.field === "customerName"
+                        element.content.field === "sNo" ||
+                        element.content.field === "customerName"
                       }
                       className={inputClass}
                       style={{
@@ -569,7 +557,7 @@ export default function CustomerMeasurementForm({
                       dir="ltr"
                     />
                   </div>
-                  {element.content?.dottedLine ? (
+                  {element.content.dottedLine ? (
                     <div className="absolute left-6 right-1 bottom-1 border-b border-dashed border-slate-300 z-0 pointer-events-none" />
                   ) : (
                     <div className="absolute left-0 right-0 bottom-0 border-b border-slate-300 z-0 pointer-events-none" />
@@ -596,8 +584,8 @@ export default function CustomerMeasurementForm({
             }
 
             if (element.type === "svg") {
-              let assetName = element.content?.asset;
-              let rawContent = element.content?.raw;
+              let assetName = element.content.asset;
+              let rawContent = element.content.raw;
 
               // Swap Sada Patti with Ghum Patti
               if (
@@ -608,35 +596,19 @@ export default function CustomerMeasurementForm({
                 rawContent = asset12GhumRaw; // Use dynamically generated and imported raw content
               }
 
-              // Swap Asteen shapes
-              if (element.id === "svg_shape6") {
-                if (fields["sk_asteen_type"] === "sada_bukram") {
-                  assetName = "Asset_6_Sada_Bukram.svg";
-                  rawContent = asset6SadaBukramRaw;
-                } else if (fields["sk_asteen_type"] === "kani_asteen") {
-                  assetName = "Asset_6_Kani_Asteen.svg";
-                  rawContent = asset6KaniAsteenRaw;
-                } else if (fields["sk_asteen_type"] === "baghair_bukram") {
-                  assetName = "Asset_6_Baghair_Bukram_Fold.svg";
-                  rawContent = asset6BaghairBukramFoldRaw;
-                } else if (
-                  !fields["sk_asteen_type"] ||
-                  fields["sk_asteen_type"] === "sada_asteen" ||
-                  fields["sk_asteen_type"] === "default"
-                ) {
-                  // Fallback for empty or explicitly sada_asteen
-                  assetName = "Asset 6.svg";
-                  rawContent = asset6Raw;
-                }
+            // Swap Asteen shapes
+            if (element.id === "svg_shape6") {
+              if (fields["sk_asteen_type"] === "sada_bukram") {
+                assetName = "Asset_6_Sada_Bukram.svg";
+                rawContent = asset6SadaBukramRaw;
+              } else if (fields["sk_asteen_type"] === "kani_asteen") {
+                assetName = "Asset_6_Kani_Asteen.svg";
+                rawContent = asset6KaniAsteenRaw;
+              } else if (fields["sk_asteen_type"] === "baghair_bukram_fold") {
+                assetName = "Asset_6_Baghair_Bukram_Fold.svg";
+                rawContent = asset6BaghairBukramFoldRaw;
               }
-
-              const svgBase64 = rawContent
-                ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(rawContent.replace(/\\n/g, ""))}`
-                : `/SVG/${assetName}`;
-
-              return (
-                <div
-                  key={element.id}
+            }
                   style={style}
                   className="relative pointer-events-none"
                 >
@@ -651,7 +623,7 @@ export default function CustomerMeasurementForm({
                     draggable={false}
                   />
                   {/* Nested Inputs inside the SVG */}
-                  {(element.content?.inputs || []).map((inp: any) => {
+                  {(element.content.inputs || []).map((inp: any) => {
                     const valStr = formatMeasurementDisplay(
                       (fields[inp.id] || "").toString(),
                     );
@@ -713,9 +685,7 @@ export default function CustomerMeasurementForm({
                   className="flex items-end justify-center gap-4 font-urdu"
                 >
                   {options.map((opt: any) => {
-                    const svgBase64 = opt.raw
-                      ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(opt.raw.replace(/\n/g, ""))}`
-                      : `/SVG/${opt.asset}`;
+                    const svgBase64 = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(opt.raw.replace(/\n/g, ""))}`;
                     return (
                       <label
                         key={opt.key}
@@ -1127,42 +1097,6 @@ export default function CustomerMeasurementForm({
               );
             }
 
-            if (element.type === "skAsteenShapeGroup") {
-              return (
-                <div
-                  key={element.id}
-                  style={{ ...style, zIndex: 20 }}
-                  className="flex flex-col justify-center gap-1.5 px-2 pointer-events-auto"
-                >
-                  <div
-                    className="text-[13px] font-bold text-slate-700 font-urdu py-0 px-2 cursor-context-menu hover:text-primary-600 transition-colors drop-shadow-sm select-none rounded w-full flex items-center justify-end"
-                    dir="rtl"
-                    onContextMenu={(e) =>
-                      handleContextMenu(e, "sk_asteen_type", [
-                        { key: "sada_asteen", labelUr: "سادہ آستین" },
-                        { key: "baghair_bukram", labelUr: "بغیر بکرم" },
-                        { key: "sada_bukram", labelUr: "سادہ بکرم" },
-                        { key: "kani_asteen", labelUr: "کنی آستین" },
-                      ])
-                    }
-                    title={
-                      isUrdu
-                        ? "ØªØ¨Ø¯ÛŒÙ„ Ú©Ø±Ù†Û’ Ú©Û’ Ù„Ø¦Û’ رائٹ Ú©Ù„ک Ú©Ø±ÛŒں"
-                        : "Right-click to change"
-                    }
-                  >
-                    {fields["sk_asteen_type"] === "sada_bukram"
-                      ? "سادہ بکرم"
-                      : fields["sk_asteen_type"] === "kani_asteen"
-                        ? "کنی آستین"
-                        : fields["sk_asteen_type"] === "baghair_bukram"
-                          ? "بغیر بکرم"
-                          : "سادہ آستین"}
-                  </div>
-                </div>
-              );
-            }
-
             return null;
           })}
         </div>
@@ -1196,7 +1130,7 @@ export default function CustomerMeasurementForm({
       {/* Global Context Menu */}
       {contextMenu && contextMenu.visible && (
         <div
-          className="fixed bg-white border border-slate-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-md py-1 z-[9999] min-w-[140px] transform max-h-[280px] overflow-y-auto custom-scrollbar"
+          className="fixed bg-white border border-slate-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-md py-1 z-[9999] min-w-[140px] transform"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onContextMenu={(e) => e.preventDefault()}
         >

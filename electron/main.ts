@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 let mainWindow: BrowserWindow | null = null;
+const activePrintWindows = new Set<BrowserWindow>();
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -95,12 +96,23 @@ app.whenReady().then(() => {
         }
     });
 
-    ipcMain.handle('print-to-pdf', async (event, htmlContent) => {
+    ipcMain.handle('print-to-pdf', async (event, htmlContent, pageSize) => {
         try {
             const printWin = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: false, contextIsolation: true } });
+            activePrintWindows.add(printWin);
             await printWin.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
-            await printWin.webContents.print({ printBackground: true });
-            printWin.close();
+            await printWin.webContents.print({ 
+                printBackground: true,
+                pageSize: pageSize || 'A4'
+            });
+            
+            setTimeout(() => {
+                if (!printWin.isDestroyed()) {
+                    printWin.close();
+                }
+                activePrintWindows.delete(printWin);
+            }, 7000);
+
             return { success: true };
         } catch (error: any) {
             console.error('Print Preview Error:', error);
@@ -108,9 +120,10 @@ app.whenReady().then(() => {
         }
     });
 
-    ipcMain.handle('print-silent', async (event, htmlContent, printerName) => {
+    ipcMain.handle('print-silent', async (event, htmlContent, printerName, pageSize) => {
         try {
             const printWin = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: false, contextIsolation: true } });
+            activePrintWindows.add(printWin);
             await printWin.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
             
             // Allow time for images/fonts to load
@@ -120,9 +133,18 @@ app.whenReady().then(() => {
                 silent: true, 
                 deviceName: printerName,
                 printBackground: true,
+                pageSize: pageSize || 'A4',
                 margins: { marginType: 'printableArea' }
             });
-            printWin.close();
+
+            // Do not close immediately. Give the Windows spooler time to receive the data.
+            setTimeout(() => {
+                if (!printWin.isDestroyed()) {
+                    printWin.close();
+                }
+                activePrintWindows.delete(printWin);
+            }, 7000);
+
             return { success: true };
         } catch (error: any) {
             console.error('Silent Print Error:', error);
@@ -133,6 +155,7 @@ app.whenReady().then(() => {
     ipcMain.handle('save-pdf', async (event, htmlContent) => {
         try {
             const printWin = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: false, contextIsolation: true } });
+            activePrintWindows.add(printWin);
             await printWin.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
             
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -141,7 +164,9 @@ app.whenReady().then(() => {
                 printBackground: true,
                 pageSize: 'A5'
             });
+            
             printWin.close();
+            activePrintWindows.delete(printWin);
 
             const { filePath } = await dialog.showSaveDialog({
                 filters: [{ name: 'PDF Files', extensions: ['pdf'] }],

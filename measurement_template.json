@@ -51,19 +51,19 @@
         "type": "textBlock",
         "x": 18,
         "y": 14,
-        "width": 35,
+        "width": 30,
         "content": "Name",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
       },
       {
-        "id": "header_label_phone",
+        "id": "header_label_suitQty",
         "type": "textBlock",
-        "x": 54,
+        "x": 50,
         "y": 14,
-        "width": 25,
-        "content": "Phone",
+        "width": 20,
+        "content": "Suit Qty",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
@@ -71,9 +71,9 @@
       {
         "id": "header_label_karigar",
         "type": "textBlock",
-        "x": 80,
+        "x": 72,
         "y": 14,
-        "width": 18,
+        "width": 20,
         "content": "Karigar",
         "fontSize": 12,
         "color": "#475569",
@@ -98,7 +98,7 @@
         "type": "input",
         "x": 18,
         "y": 15,
-        "width": 35,
+        "width": 30,
         "height": 4.5,
         "content": {
           "label": "",
@@ -108,15 +108,15 @@
         "isFixed": true
       },
       {
-        "id": "header_val_phone",
+        "id": "header_val_suitQty",
         "type": "input",
-        "x": 54,
+        "x": 50,
         "y": 15,
-        "width": 25,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",
-          "field": "phone",
+          "field": "suitQty",
           "hideLabel": true
         },
         "isFixed": true
@@ -124,9 +124,9 @@
       {
         "id": "header_val_karigar",
         "type": "input",
-        "x": 80,
+        "x": 72,
         "y": 15,
-        "width": 18,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",
@@ -305,10 +305,10 @@
       {
         "id": "svg_shape14",
         "type": "svg",
-        "x": 24.200000000000006,
-        "y": 23.668570382254465,
-        "width": 52.800000000000004,
-        "height": 9,
+        "x": 40.60001220703125,
+        "y": 24.954284667968746,
+        "width": 45.4,
+        "height": 8.428571428571429,
         "content": {
           "asset": "Asset 14.svg",
           "inputs": [
@@ -326,10 +326,10 @@
       {
         "id": "svg_shape13",
         "type": "svg",
-        "x": 22.200000000000006,
-        "y": 26.640000000000004,
-        "width": 55.00000000000001,
-        "height": 5.714285714285714,
+        "x": 39.2,
+        "y": 25.78285871233259,
+        "width": 51.2,
+        "height": 7.857142857142857,
         "content": {
           "asset": "Asset 13.svg",
           "inputs": [
@@ -348,7 +348,7 @@
         "id": "svg_shape10",
         "type": "svg",
         "x": 28.199999999999996,
-        "y": 42.84571428571429,
+        "y": 39.13142857142857,
         "width": 29.799999999999997,
         "height": 12.714285714285714,
         "content": {
@@ -372,8 +372,8 @@
       {
         "id": "svg_shape12",
         "type": "svg",
-        "x": 80.89998168945311,
-        "y": 51.272856848580496,
+        "x": 79.49998168945311,
+        "y": 41.84428542000907,
         "width": 5.2,
         "height": 14.285714285714285,
         "content": {
@@ -403,8 +403,8 @@
       {
         "id": "svg_shape9",
         "type": "svg",
-        "x": 69.45000610351563,
-        "y": 51.26714570181711,
+        "x": 70.45000610351563,
+        "y": 48.26714570181711,
         "width": 6.2,
         "height": 14.428571428571429,
         "content": {
@@ -431,8 +431,8 @@
       {
         "id": "svg_shape1",
         "type": "svg",
-        "x": 21.899993896484375,
-        "y": 58.41428402491977,
+        "x": 23.89999389648438,
+        "y": 53.12856973920549,
         "width": 25,
         "height": 9.142857142857142,
         "content": {
@@ -452,8 +452,8 @@
       {
         "id": "svg_shape8",
         "type": "svg",
-        "x": 33.650000000000006,
-        "y": 71.81857142857143,
+        "x": 26.050000000000008,
+        "y": 64.81857142857143,
         "width": 18.8,
         "height": 13.14,
         "content": {
@@ -473,8 +473,8 @@
       {
         "id": "svg_shape7",
         "type": "svg",
-        "x": 53.29999999999999,
-        "y": 71.81857142857143,
+        "x": 48.69999999999999,
+        "y": 67.24714285714286,
         "width": 23.6,
         "height": 13.29,
         "content": {
@@ -506,8 +506,8 @@
       {
         "id": "svg_shape6",
         "type": "svg",
-        "x": 78.20000610351563,
-        "y": 67.71428026471821,
+        "x": 73.80000610351563,
+        "y": 61.42856597900392,
         "width": 17.4,
         "height": 16.57142857142857,
         "content": {
@@ -532,10 +532,10 @@
       {
         "id": "damanGroup",
         "type": "damanGroup",
-        "x": 6.6000000000000005,
-        "y": 84.57285714285715,
+        "x": 6.2,
+        "y": 81.71571428571428,
         "width": 18.8,
-        "height": 7.86,
+        "height": 7.857142857142857,
         "content": {
           "options": [
             {
@@ -556,10 +556,10 @@
       {
         "id": "sk_collar_toggle",
         "type": "skCollarToggleGroup",
-        "x": 67.59998779296875,
-        "y": 20.857142857142858,
-        "width": 29.799999999999997,
-        "height": 5.142857142857142,
+        "x": 70,
+        "y": 20.285714285714292,
+        "width": 30,
+        "height": 5,
         "content": {
           "field": "sk_collar_type"
         }
@@ -567,9 +567,9 @@
       {
         "id": "sk_patti_kaaj",
         "type": "skPattiKaajGroup",
-        "x": 18.199999999999996,
-        "y": 46.85714285714286,
-        "width": 29.799999999999997,
+        "x": 22.000000000000007,
+        "y": 43.71428135463171,
+        "width": 18,
         "height": 5,
         "content": {
           "field": "sk_patti_kaaj"
@@ -578,10 +578,10 @@
       {
         "id": "silaiGroup",
         "type": "silaiGroup",
-        "x": 4,
-        "y": 70.85714285714285,
-        "width": 25,
-        "height": 4,
+        "x": 1.199993896484375,
+        "y": 71.00000630106244,
+        "width": 17,
+        "height": 5.142857142857142,
         "content": {
           "options": [
             {
@@ -634,9 +634,9 @@
       {
         "id": "banGroup",
         "type": "banGroup",
-        "x": 38.800000000000004,
-        "y": 31.714285714285715,
-        "width": 59.8,
+        "x": 21.799993896484374,
+        "y": 22.281428745814733,
+        "width": 18.8,
         "height": 5,
         "content": {
           "options": [
@@ -662,9 +662,9 @@
       {
         "id": "cuffGroup",
         "type": "cuffGroup",
-        "x": 30.4,
-        "y": 37.42857142857143,
-        "width": 25,
+        "x": 33.6,
+        "y": 33.43001011439733,
+        "width": 19.2,
         "height": 5.714285714285714,
         "content": {
           "options": [
@@ -692,12 +692,44 @@
         }
       },
       {
+        "id": "buttonDesignGroup",
+        "type": "buttonDesignGroup",
+        "x": 72.60000610351561,
+        "y": 35.71572004045759,
+        "width": 24,
+        "height": 5.714285714285714,
+        "content": {
+          "options": [
+            {
+              "key": "btn_tak",
+              "labelUr": "ٹک بٹن",
+              "label": "Tak Button"
+            },
+            {
+              "key": "btn_steel",
+              "labelUr": "سٹیل بٹن",
+              "label": "Steel Button"
+            },
+            {
+              "key": "btn_ring",
+              "labelUr": "رنگ بٹن",
+              "label": "Ring Button"
+            },
+            {
+              "key": "btn_vip",
+              "labelUr": "وی آئی پی بٹن",
+              "label": "VIP Button"
+            }
+          ]
+        }
+      },
+      {
         "id": "sk_notes_area",
         "type": "textArea",
-        "x": 29.800006103515624,
-        "y": 87.85714043889728,
-        "width": 52,
-        "height": 10,
+        "x": 33.40000610351562,
+        "y": 81.85713171958923,
+        "width": 61.4,
+        "height": 11.428571428571429,
         "content": {
           "label": "Other Details / Notes",
           "field": "other_details"
@@ -754,19 +786,19 @@
         "type": "textBlock",
         "x": 18,
         "y": 14,
-        "width": 35,
+        "width": 30,
         "content": "Name",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
       },
       {
-        "id": "header_label_phone",
+        "id": "header_label_suitQty",
         "type": "textBlock",
-        "x": 54,
+        "x": 50,
         "y": 14,
-        "width": 25,
-        "content": "Phone",
+        "width": 20,
+        "content": "Suit Qty",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
@@ -774,9 +806,9 @@
       {
         "id": "header_label_karigar",
         "type": "textBlock",
-        "x": 80,
+        "x": 72,
         "y": 14,
-        "width": 18,
+        "width": 20,
         "content": "Karigar",
         "fontSize": 12,
         "color": "#475569",
@@ -801,7 +833,7 @@
         "type": "input",
         "x": 18,
         "y": 15,
-        "width": 35,
+        "width": 30,
         "height": 4.5,
         "content": {
           "label": "",
@@ -811,15 +843,15 @@
         "isFixed": true
       },
       {
-        "id": "header_val_phone",
+        "id": "header_val_suitQty",
         "type": "input",
-        "x": 54,
+        "x": 50,
         "y": 15,
-        "width": 25,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",
-          "field": "phone",
+          "field": "suitQty",
           "hideLabel": true
         },
         "isFixed": true
@@ -827,9 +859,9 @@
       {
         "id": "header_val_karigar",
         "type": "input",
-        "x": 80,
+        "x": 72,
         "y": 15,
-        "width": 18,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",
@@ -1014,19 +1046,19 @@
         "type": "textBlock",
         "x": 18,
         "y": 14,
-        "width": 35,
+        "width": 30,
         "content": "Name",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
       },
       {
-        "id": "header_label_phone",
+        "id": "header_label_suitQty",
         "type": "textBlock",
-        "x": 54,
+        "x": 50,
         "y": 14,
-        "width": 25,
-        "content": "Phone",
+        "width": 20,
+        "content": "Suit Qty",
         "fontSize": 12,
         "color": "#475569",
         "isFixed": true
@@ -1034,9 +1066,9 @@
       {
         "id": "header_label_karigar",
         "type": "textBlock",
-        "x": 80,
+        "x": 72,
         "y": 14,
-        "width": 18,
+        "width": 20,
         "content": "Karigar",
         "fontSize": 12,
         "color": "#475569",
@@ -1061,7 +1093,7 @@
         "type": "input",
         "x": 18,
         "y": 15,
-        "width": 35,
+        "width": 30,
         "height": 4.5,
         "content": {
           "label": "",
@@ -1071,15 +1103,15 @@
         "isFixed": true
       },
       {
-        "id": "header_val_phone",
+        "id": "header_val_suitQty",
         "type": "input",
-        "x": 54,
+        "x": 50,
         "y": 15,
-        "width": 25,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",
-          "field": "phone",
+          "field": "suitQty",
           "hideLabel": true
         },
         "isFixed": true
@@ -1087,9 +1119,9 @@
       {
         "id": "header_val_karigar",
         "type": "input",
-        "x": 80,
+        "x": 72,
         "y": 15,
-        "width": 18,
+        "width": 20,
         "height": 4.5,
         "content": {
           "label": "",

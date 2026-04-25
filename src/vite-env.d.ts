@@ -4,9 +4,9 @@ interface ElectronAPI {
     saveFile: (content: string, filename: string) => Promise<{ success: boolean; path?: string }>;
     openFile: () => Promise<{ success: boolean; content?: string; path?: string }>;
     getAppVersion: () => Promise<string>;
-    printToPDF: (htmlContent: string) => Promise<{ success: boolean; path?: string; error?: string }>;
+    printToPDF: (htmlContent: string, pageSize?: string) => Promise<{ success: boolean; path?: string; error?: string }>;
     getPrinters: () => Promise<Electron.PrinterInfo[]>;
-    printSilent: (htmlContent: string, printerName: string) => Promise<{ success: boolean; error?: string }>;
+    printSilent: (htmlContent: string, printerName: string, pageSize?: string) => Promise<{ success: boolean; error?: string }>;
     savePDF: (htmlContent: string) => Promise<{ success: boolean; path?: string; error?: string }>;
 }
 

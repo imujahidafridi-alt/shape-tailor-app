@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openFile: () => ipcRenderer.invoke('open-file'),
     getAppVersion: () => ipcRenderer.invoke('get-app-version'),
     getPrinters: () => ipcRenderer.invoke('get-printers'),
-    printToPDF: (htmlContent: string) => ipcRenderer.invoke('print-to-pdf', htmlContent),
-    printSilent: (htmlContent: string, printerName: string) => ipcRenderer.invoke('print-silent', htmlContent, printerName),
+    printToPDF: (htmlContent: string, pageSize?: string) => ipcRenderer.invoke('print-to-pdf', htmlContent, pageSize),
+    printSilent: (htmlContent: string, printerName: string, pageSize?: string) => ipcRenderer.invoke('print-silent', htmlContent, printerName, pageSize),
     savePDF: (htmlContent: string) => ipcRenderer.invoke('save-pdf', htmlContent)
 });
