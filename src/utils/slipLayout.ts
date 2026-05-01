@@ -1050,6 +1050,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 8.428571428571429,
         "content": {
           "asset": "Asset 14.svg",
+          "raw": asset14Raw,
           "inputs": [
             {
               "id": "shape14_1",
@@ -1071,6 +1072,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 7.857142857142857,
         "content": {
           "asset": "Asset 13.svg",
+          "raw": asset13Raw,
           "inputs": [
             {
               "id": "shape13_1",
@@ -1092,6 +1094,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 12.714285714285714,
         "content": {
           "asset": "Asset 10.svg",
+          "raw": asset10Raw,
           "inputs": [
             {
               "id": "shape10_1",
@@ -1117,6 +1120,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 16.428571428571427,
         "content": {
           "asset": "Asset 12.svg",
+          "raw": asset12Raw,
           "inputs": [
             {
               "id": "shape12_1",
@@ -1148,6 +1152,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 14.428571428571429,
         "content": {
           "asset": "Asset 9.svg",
+          "raw": asset9Raw,
           "inputs": [
             {
               "id": "svg_shape9_1",
@@ -1176,6 +1181,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 9.142857142857142,
         "content": {
           "asset": "Asset 1.svg",
+          "raw": asset1Raw,
           "inputs": [
             {
               "id": "shape1_1",
@@ -1197,6 +1203,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 13.14,
         "content": {
           "asset": "Asset 8.svg",
+          "raw": asset8Raw,
           "inputs": [
             {
               "id": "shape8_1",
@@ -1218,6 +1225,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 13.29,
         "content": {
           "asset": "Asset 7.svg",
+          "raw": asset7Raw,
           "inputs": [
             {
               "id": "shape7_1",
@@ -1251,6 +1259,7 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 16.57142857142857,
         "content": {
           "asset": "Asset_6_Baghair_Bukram_Fold.svg",
+          "raw": asset6Raw,
           "inputs": [
             {
               "id": "shape6_1",
@@ -1280,11 +1289,13 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
             {
               "key": "daman_curved",
               "asset": "Asset 3.svg",
+              "raw": asset3Raw,
               "labelUr": "گول دامن"
             },
             {
               "key": "daman_straight",
               "asset": "Asset 2.svg",
+              "raw": asset2Raw,
               "labelUr": "سیدھا دامن"
             }
           ]

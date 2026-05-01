@@ -55,9 +55,9 @@ app.whenReady().then(() => {
             filters: [{ name: 'JSON Files', extensions: ['json'] }]
         });
         if (filePaths && filePaths.length > 0) {
-            return fs.readFileSync(filePaths[0], 'utf-8');
+            return { success: true, content: fs.readFileSync(filePaths[0], 'utf-8') };
         }
-        return null;
+        return { success: false, error: 'No file selected' };
     });
 
     ipcMain.handle('get-app-version', () => app.getVersion());
