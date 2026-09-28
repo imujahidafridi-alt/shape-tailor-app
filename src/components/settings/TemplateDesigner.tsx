@@ -466,12 +466,16 @@ export default function TemplateDesigner({ isOpen, onClose }: Props) {
         );
       }
       case "buttonDesignGroup": {
-        const options = element.content?.options || [
+        const rawOpts = element.content?.options || [
+          { key: "btn_sada", labelUr: "سادہ بٹن", label: "Sada Button" },
           { key: "btn_tak", labelUr: "ٹک بٹن", label: "Tak Button" },
           { key: "btn_steel", labelUr: "سٹیل بٹن", label: "Steel Button" },
           { key: "btn_ring", labelUr: "رنگ بٹن", label: "Ring Button" },
           { key: "btn_vip", labelUr: "وی آئی پی بٹن", label: "VIP Button" },
         ];
+        const options = rawOpts.some((o: any) => o.key === "btn_sada")
+          ? rawOpts
+          : [{ key: "btn_sada", labelUr: "سادہ بٹن", label: "Sada Button" }, ...rawOpts];
         return (
           <div
             className="w-full h-full flex flex-col justify-center text-xs font-semibold text-slate-600 font-urdu px-2"

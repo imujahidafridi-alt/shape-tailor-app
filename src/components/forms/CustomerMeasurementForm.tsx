@@ -36,6 +36,8 @@ import asset6SadaBukramRaw from "/SVG/Asset_6_Sada_Bukram.svg?raw";
 import asset6KaniAsteenRaw from "/SVG/Asset_6_Kani_Asteen.svg?raw";
 import asset6BaghairBukramFoldRaw from "/SVG/Asset_6_Baghair_Bukram_Fold.svg?raw";
 import asset6Raw from "/SVG/Asset 6.svg?raw";
+import asset7DarzRaw from "/SVG/Asset_7_Darz.svg?raw";
+import asset7Raw from "/SVG/Asset 7.svg?raw";
 
 interface CustomerMeasurementFormProps {
   customerId: number | string;
@@ -74,8 +76,10 @@ export default function CustomerMeasurementForm({
     visible: boolean;
     x: number;
     y: number;
-    fieldKey: string;
+    fieldKey?: string;
     options: { key: string; labelUr?: string; label?: string }[];
+    isMulti?: boolean;
+    title?: string;
   } | null>(null);
 
   useEffect(() => {
@@ -85,11 +89,17 @@ export default function CustomerMeasurementForm({
   }, []);
 
   const handleContextMenu = useCallback(
-    (e: React.MouseEvent, fieldKey: string, options: any[]) => {
+    (
+      e: React.MouseEvent,
+      fieldKey: string,
+      options: any[],
+      isMulti = false,
+      title?: string,
+    ) => {
       e.preventDefault();
 
       // Calculate approximate height (each option is ~36px + some padding)
-      const estimatedHeight = Math.min(options.length * 36 + 16, 280);
+      const estimatedHeight = Math.min(options.length * 40 + 40, 280);
       const spaceBelow = window.innerHeight - e.clientY;
 
       let top = e.clientY;
@@ -104,6 +114,8 @@ export default function CustomerMeasurementForm({
         y: top,
         fieldKey,
         options,
+        isMulti,
+        title,
       });
     },
     [],
@@ -628,17 +640,102 @@ export default function CustomerMeasurementForm({
                   assetName = "Asset 6.svg";
                   rawContent = asset6Raw;
                 }
+
+                // Overlay fitting curve(s) directly on top of the straight line
+                let extraCurvePaths = "";
+                if (fields["sk_asteen_curve_top"] === "yes") {
+                  extraCurvePaths += '<path class="cls-1" d="M 1.81,34.33 C 16,42, 29,58, 27.5,75"/>';
+                }
+                if (fields["sk_asteen_curve_bottom"] === "yes") {
+                  extraCurvePaths += '<path class="cls-1" d="M 27.5,75 C 23,94, 38,110, 53.20,115.73"/>';
+                }
+                if (extraCurvePaths && rawContent) {
+                  rawContent = rawContent.replace("</g>", extraCurvePaths + "</g>");
+                }
+              }
+
+              // Swap Shalwar shape
+              if (element.id === "svg_shape7") {
+                if (fields["sk_shalwar_type"] === "darz_shalwar") {
+                  assetName = "Asset_7_Darz.svg";
+                  rawContent = asset7DarzRaw;
+                } else {
+                  assetName = "Asset 7.svg";
+                  rawContent = asset7Raw;
+                }
               }
 
               const svgBase64 = rawContent
                 ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(rawContent.replace(/\\n/g, ""))}`
                 : `/SVG/${assetName}`;
 
+              const isShalwar = element.id === "svg_shape7";
+              const isAsteen = element.id === "svg_shape6";
+              const isInteractiveShape = isShalwar || isAsteen;
+
+              const shalwarOptions = [
+                {
+                  key: "sada_shalwar",
+                  labelUr: "سادہ شلوار",
+                  label: "Sada Shalwar",
+                },
+                {
+                  key: "darz_shalwar",
+                  labelUr: "درز شلوار",
+                  label: "Darz Shalwar",
+                },
+              ];
+
+              const asteenFittingOptions = [
+                {
+                  key: "sk_asteen_curve_top",
+                  labelUr: "اندر کرو (اوپر بائیں)",
+                  label: "Inside Curve (Top-Left)",
+                },
+                {
+                  key: "sk_asteen_curve_bottom",
+                  labelUr: "باہر کرو (نیچے بائیں)",
+                  label: "Outside Curve (Bottom-Left)",
+                },
+              ];
+
               return (
                 <div
                   key={element.id}
                   style={style}
-                  className="relative pointer-events-none"
+                  className={`relative ${
+                    isInteractiveShape
+                      ? "pointer-events-auto cursor-context-menu"
+                      : "pointer-events-none"
+                  }`}
+                  onContextMenu={
+                    isShalwar
+                      ? (e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleContextMenu(e, "sk_shalwar_type", shalwarOptions);
+                        }
+                      : isAsteen
+                        ? (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleContextMenu(
+                              e,
+                              "",
+                              asteenFittingOptions,
+                              true,
+                              isUrdu ? "آستین فِٹنگ کرو" : "Sleeve Fitting",
+                            );
+                          }
+                        : undefined
+                  }
+                  title={
+                    isInteractiveShape
+                      ? isUrdu
+                        ? "تبدیل کرنے کے لئے رائٹ کلک کریں"
+                        : "Right-click to change"
+                      : undefined
+                  }
                 >
                   <img
                     src={svgBase64}
@@ -683,6 +780,31 @@ export default function CustomerMeasurementForm({
                         value={valStr}
                         onChange={(e) =>
                           handleFieldChange(inp.id, e.target.value)
+                        }
+                        onContextMenu={
+                          isShalwar
+                            ? (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleContextMenu(
+                                  e,
+                                  "sk_shalwar_type",
+                                  shalwarOptions,
+                                );
+                              }
+                            : isAsteen
+                              ? (e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleContextMenu(
+                                    e,
+                                    "",
+                                    asteenFittingOptions,
+                                    true,
+                                    isUrdu ? "آستین فِٹنگ کرو" : "Sleeve Fitting",
+                                  );
+                                }
+                              : undefined
                         }
                         className={`absolute outline-none text-slate-900 font-bold rounded-sm z-10 text-center pointer-events-auto transition-all focus:bg-white focus:ring-1 focus:ring-slate-400 ${
                           !valStr
@@ -778,7 +900,10 @@ export default function CustomerMeasurementForm({
             }
 
             if (element.type === "buttonDesignGroup") {
-              const options = element.content?.options || BUTTON_DESIGN_OPTIONS;
+              const baseOptions = element.content?.options || BUTTON_DESIGN_OPTIONS;
+              const options = baseOptions.some((o: any) => o.key === "btn_sada")
+                ? baseOptions
+                : [{ key: "btn_sada", labelUr: "سادہ بٹن", label: "Sada Button" }, ...baseOptions];
               const val = fields["button_design_selected"];
               const selectedLabel = val
                 ? options.find((o: any) => o.key === val)?.labelUr ||
@@ -1196,23 +1321,58 @@ export default function CustomerMeasurementForm({
       {/* Global Context Menu */}
       {contextMenu && contextMenu.visible && (
         <div
-          className="fixed bg-white border border-slate-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-md py-1 z-[9999] min-w-[140px] transform max-h-[280px] overflow-y-auto custom-scrollbar"
+          className="fixed bg-white border border-slate-200 shadow-[0_6px_25px_-5px_rgba(0,0,0,0.15)] rounded-lg py-1 z-[9999] min-w-[190px] transform max-h-[300px] overflow-y-auto custom-scrollbar"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onContextMenu={(e) => e.preventDefault()}
         >
-          {contextMenu.options.map((opt) => (
+          {contextMenu.title && (
             <div
-              key={opt.key}
-              className="px-4 py-2 hover:bg-slate-100 cursor-pointer text-right font-urdu text-[13px] text-slate-700 transition-colors font-bold"
+              className="px-3 py-1.5 border-b border-slate-100 font-urdu text-[12px] font-bold text-slate-500 text-right bg-slate-50/70"
               dir="rtl"
-              onClick={() => {
-                handleFieldChange(contextMenu.fieldKey, opt.key);
-                setContextMenu(null);
-              }}
             >
-              {opt.labelUr || opt.label || ""}
+              {contextMenu.title}
             </div>
-          ))}
+          )}
+          {contextMenu.isMulti
+            ? contextMenu.options.map((opt) => {
+                const isChecked = fields[opt.key] === "yes";
+                return (
+                  <label
+                    key={opt.key}
+                    className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-slate-50 cursor-pointer select-none font-urdu text-[13px] text-slate-700 font-bold border-b border-slate-50 last:border-0"
+                    dir="rtl"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>{opt.labelUr || opt.label}</span>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) => {
+                        handleFieldChange(
+                          opt.key,
+                          e.target.checked ? "yes" : "no",
+                        );
+                      }}
+                      className="w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-primary-500 cursor-pointer accent-primary-600"
+                    />
+                  </label>
+                );
+              })
+            : contextMenu.options.map((opt) => (
+                <div
+                  key={opt.key}
+                  className="px-4 py-2 hover:bg-slate-100 cursor-pointer text-right font-urdu text-[13px] text-slate-700 transition-colors font-bold"
+                  dir="rtl"
+                  onClick={() => {
+                    if (contextMenu.fieldKey) {
+                      handleFieldChange(contextMenu.fieldKey, opt.key);
+                    }
+                    setContextMenu(null);
+                  }}
+                >
+                  {opt.labelUr || opt.label || ""}
+                </div>
+              ))}
         </div>
       )}
     </div>

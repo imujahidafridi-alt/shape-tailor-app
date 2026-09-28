@@ -733,6 +733,7 @@ export const CUFF_OPTIONS = [
 ];
 
 export const BUTTON_DESIGN_OPTIONS = [
+    { key: 'btn_sada', labelUr: 'سادہ بٹن', label: 'Sada Button' },
     { key: 'btn_tak', labelUr: 'ٹک بٹن', label: 'Tak Button' },
     { key: 'btn_steel', labelUr: 'سٹیل بٹن', label: 'Steel Button' },
     { key: 'btn_ring', labelUr: 'رنگ بٹن', label: 'Ring Button' },
@@ -1470,6 +1471,11 @@ export const DEFAULT_LAYOUT: LayoutElement[] = [
         "height": 5.714285714285714,
         "content": {
           "options": [
+            {
+              "key": "btn_sada",
+              "labelUr": "سادہ بٹن",
+              "label": "Sada Button"
+            },
             {
               "key": "btn_tak",
               "labelUr": "ٹک بٹن",

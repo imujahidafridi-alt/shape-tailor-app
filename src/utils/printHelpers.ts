@@ -7,6 +7,8 @@ import asset6SadaBukramRaw from "/SVG/Asset_6_Sada_Bukram.svg?raw";
 import asset6KaniAsteenRaw from "/SVG/Asset_6_Kani_Asteen.svg?raw";
 import asset6BaghairBukramFoldRaw from "/SVG/Asset_6_Baghair_Bukram_Fold.svg?raw";
 import asset6Raw from "/SVG/Asset 6.svg?raw";
+import asset7DarzRaw from "/SVG/Asset_7_Darz.svg?raw";
+import asset7Raw from "/SVG/Asset 7.svg?raw";
 
 export const generateMeasurementSlipHTML = (
     customer: Customer,
@@ -146,6 +148,28 @@ export const generateMeasurementSlipHTML = (
                 } else if (!measurement.fields['sk_asteen_type'] || measurement.fields['sk_asteen_type'] === 'sada_asteen' || measurement.fields['sk_asteen_type'] === 'default') {
                     assetName = 'Asset 6.svg';
                     rawContent = asset6Raw;
+                }
+
+                // Overlay fitting curve(s) directly on top of the straight line
+                let extraCurvePaths = '';
+                if (measurement.fields['sk_asteen_curve_top'] === 'yes') {
+                    extraCurvePaths += '<path class="cls-1" d="M 1.81,34.33 C 16,42, 29,58, 27.5,75"/>';
+                }
+                if (measurement.fields['sk_asteen_curve_bottom'] === 'yes') {
+                    extraCurvePaths += '<path class="cls-1" d="M 27.5,75 C 23,94, 38,110, 53.20,115.73"/>';
+                }
+                if (extraCurvePaths && rawContent) {
+                    rawContent = rawContent.replace('</g>', extraCurvePaths + '</g>');
+                }
+            }
+
+            if (element.id === 'svg_shape7') {
+                if (measurement.fields['sk_shalwar_type'] === 'darz_shalwar') {
+                    assetName = 'Asset_7_Darz.svg';
+                    rawContent = asset7DarzRaw;
+                } else {
+                    assetName = 'Asset 7.svg';
+                    rawContent = asset7Raw;
                 }
             }
 
@@ -294,12 +318,16 @@ export const generateMeasurementSlipHTML = (
         }
 
         if (element.type === 'buttonDesignGroup') {
-            const options = element.content?.options || [
+            const rawOpts = element.content?.options || [
+                { key: 'btn_sada', labelUr: 'سادہ بٹن', label: 'Sada Button' },
                 { key: 'btn_tak', labelUr: 'ٹک بٹن', label: 'Tak Button' },
                 { key: 'btn_steel', labelUr: 'سٹیل بٹن', label: 'Steel Button' },
                 { key: 'btn_ring', labelUr: 'رنگ بٹن', label: 'Ring Button' },
                 { key: 'btn_vip', labelUr: 'وی آئی پی بٹن', label: 'VIP Button' },
             ];
+            const options = rawOpts.some((o: any) => o.key === 'btn_sada')
+                ? rawOpts
+                : [{ key: 'btn_sada', labelUr: 'سادہ بٹن', label: 'Sada Button' }, ...rawOpts];
 
             const selectedOption = options.find((opt: any) => measurement.fields['button_design_selected'] === opt.key);
             if (!selectedOption) return '';

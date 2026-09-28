@@ -701,6 +701,11 @@
         "content": {
           "options": [
             {
+              "key": "btn_sada",
+              "labelUr": "سادہ بٹن",
+              "label": "Sada Button"
+            },
+            {
               "key": "btn_tak",
               "labelUr": "ٹک بٹن",
               "label": "Tak Button"
